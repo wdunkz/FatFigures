@@ -5,7 +5,7 @@
     "username": "",
     "avatar": "/assets/avatars/dunks.png",
     "links": [
-      { "type": "bluesky", "url": "https://bsky.app/profile/example" },
+      { "type": "discord", "url": "https://discordapp.com/users/677595328115113985" },
       { "type": "steam", "url": "https://steamcommunity.com/id/wdunks" },
       { "type": "discord", "url": "https://discord.gg/recnet" }
     ]
@@ -17,7 +17,7 @@
     "avatar": "/assets/avatars/zai.png",
     "links": [
       { "type": "twitter", "url": "https://twitter.com/example" },
-      { "type": "discord", "url": "https://discord.gg/example" }
+      { "type": "discord", "url": "https://discord.gg/recnet" }
     ]
   }
 ]
