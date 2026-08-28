@@ -7,7 +7,7 @@
     "links": [
       { "type": "bluesky", "url": "https://bsky.app/profile/example" },
       { "type": "steam", "url": "https://steamcommunity.com/id/wdunks" },
-      { "type": "youtube", "url": "https://youtube.com/@example" }
+      { "type": "discord", "url": "https://discord.gg/recnet" }
     ]
   },
   {
