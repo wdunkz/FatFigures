@@ -6,7 +6,7 @@
     "avatar": "/assets/avatars/dunks.png",
     "links": [
       { "type": "bluesky", "url": "https://bsky.app/profile/example" },
-      { "type": "steam", "url": "https://steamcommunity.com/id/example" },
+      { "type": "steam", "url": "https://steamcommunity.com/id/wdunks" },
       { "type": "youtube", "url": "https://youtube.com/@example" }
     ]
   },
