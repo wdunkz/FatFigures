@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <div class="scene"></div>
+
+  <main class="directory">
+    <p class="eyebrow">profile directory</p>
+    <h1>everyone here</h1>
+    <p class="sub">Every card below is its own page. Click one to open it.</p>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <script type="module">
+    import { loadProfiles, avatarNode } from '/assets/site.js';
+
+    const grid = document.getElementById('grid');
+
+    try {
+      const profiles = await loadProfiles();
+
+      if (!profiles.length) {
+        grid.outerHTML = '<p class="empty-state">No profiles yet — add one to profiles.json.</p>';
+      } else {
+        for (const p of profiles) {
+          const a = document.createElement('a');
+          a.className = 'profile-tile';
+          a.href = `/${p.slug}/`;
+
+          a.appendChild(avatarNode(p, 'tile-avatar'));
+
+          const name = document.createElement('div');
+          name.className = 'tile-name';
+          name.textContent = p.name;
+          a.appendChild(name);
+
+          const slug = document.createElement('div');
+          slug.className = 'tile-slug';
+          slug.textContent = '/' + p.slug;
+          a.appendChild(slug);
+
+          grid.appendChild(a);
+        }
+      }
+    } catch (err) {
+      grid.outerHTML = `<p class="empty-state">Couldn't load profiles.json — ${err.message}</p>`;
+    }
+  </script>
+</body>
+</html>

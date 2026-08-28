@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "dunks",
+    "name": "Dunks",
+    "username": "",
+    "avatar": "/assets/avatars/dunks.png",
+    "links": [
+      { "type": "bluesky", "url": "https://bsky.app/profile/example" },
+      { "type": "steam", "url": "https://steamcommunity.com/id/example" },
+      { "type": "youtube", "url": "https://youtube.com/@example" }
+    ]
+  },
+  {
+    "slug": "zai",
+    "name": "Zai",
+    "username": "",
+    "avatar": "/assets/avatars/zai.png",
+    "links": [
+      { "type": "twitter", "url": "https://twitter.com/example" },
+      { "type": "discord", "url": "https://discord.gg/example" }
+    ]
+  }
+]
