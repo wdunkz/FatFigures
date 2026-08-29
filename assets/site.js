@@ -118,17 +118,45 @@ export function paintAura(seed) {
   }
 }
 
-/* ---------- Accent ----------
-   Optional per-profile hex, used to tint the card. Falls back to a
-   neutral near-black so an unset profile still looks deliberate. */
-function applyAccent(hex) {
-  if (!hex) return;
-  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
-  if (!m) return;
-  const n = parseInt(m[1], 16);
-  document.documentElement.style.setProperty(
-    '--accent-rgb', `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`
-  );
+/* ---------- Card appearance ----------
+   Per-profile look, all optional. Anything left out keeps the default
+   defined in style.css, so a minimal profile still looks deliberate.
+
+     accent        card tint, hex        e.g. "#0E2340"
+     opacity       tint strength, 0-1    e.g. 0.2   (lower = see-through)
+     border        border colour, hex    e.g. "#e6e6e6"
+     borderOpacity border alpha, 0-1     e.g. 0.35
+     borderWidth   border thickness, px  e.g. 1.5
+
+   A pale accent needs a much lower opacity than a dark one — a near-white
+   tint at 0.5 turns into a washed-out slab over dark video. */
+function hexToRgb(hex) {
+  if (typeof hex !== 'string') return null;
+  let h = hex.trim().replace(/^#/, '');
+  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  if (!/^[0-9a-f]{6}$/i.test(h)) return null;
+  const n = parseInt(h, 16);
+  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+
+const clamp01 = (v) => Math.min(1, Math.max(0, Number(v)));
+
+function applyCardStyle(profile) {
+  const root = document.documentElement.style;
+  const set = (prop, val) => { if (val != null) root.setProperty(prop, val); };
+
+  set('--accent-rgb', hexToRgb(profile.accent));
+  set('--card-border-rgb', hexToRgb(profile.border));
+
+  if (profile.opacity != null && isFinite(profile.opacity)) {
+    set('--card-opacity', clamp01(profile.opacity));
+  }
+  if (profile.borderOpacity != null && isFinite(profile.borderOpacity)) {
+    set('--card-border-opacity', clamp01(profile.borderOpacity));
+  }
+  if (profile.borderWidth != null && isFinite(profile.borderWidth)) {
+    set('--card-border-width', Math.max(0, Number(profile.borderWidth)) + 'px');
+  }
 }
 
 /* ============================================================
@@ -463,6 +491,19 @@ export async function renderDirectory(grid) {
     frag.appendChild(a);
   });
   grid.appendChild(frag);
+
+  // Site-wide view count under the grid. Its own counter key, separate
+  // from the per-profile ones. Only added if the count resolves, so a
+  // blocked request leaves no empty chrome.
+  const views = document.createElement('div');
+  views.className = 'dir-views';
+  views.innerHTML = EYE + '<span></span>';
+  readViews('index').then((n) => {
+    if (n == null) return;
+    views.querySelector('span').textContent = n.toLocaleString();
+    (grid.parentElement || grid).appendChild(views);
+    requestAnimationFrame(() => views.classList.add('in'));
+  });
 }
 
 /* Small drifting specks around the display name. Monochrome on purpose. */
@@ -504,7 +545,7 @@ export async function renderProfile(card) {
   }
 
   document.title = profile.name;
-  applyAccent(profile.accent);
+  applyCardStyle(profile);
 
   /* --- media starts buffering now, behind the gate --- */
   let bg = null;

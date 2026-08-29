@@ -9,9 +9,13 @@
   --muted:      #9A94AC;
   --glass-edge: rgba(255, 255, 255, 0.11);
 
-  /* Per-profile card tint, set from JS (profiles.json "accent").
-     Neutral near-black by default. */
-  --accent-rgb: 16, 16, 22;
+  /* Per-profile card look, overridden from JS (profiles.json).
+     See applyCardStyle() in site.js for the field names. */
+  --accent-rgb:           16, 16, 22;    /* "accent"        card tint      */
+  --card-opacity:         0.5;           /* "opacity"       tint strength  */
+  --card-border-rgb:      255, 255, 255; /* "border"        border colour  */
+  --card-border-opacity:  0.12;          /* "borderOpacity" border alpha   */
+  --card-border-width:    1px;           /* "borderWidth"   thickness      */
 
   /* Muted tones for the generated aura — a haze, not a colour wheel. */
   --tone-a: #2B303C;
@@ -306,8 +310,8 @@ body.no-gate .bg-media .bg-poster {
   padding: 44px 44px 46px;
   border-radius: 28px;
   text-align: center;
-  background: rgba(var(--accent-rgb), 0.5);
-  border: 1px solid var(--glass-edge);
+  background: rgba(var(--accent-rgb), var(--card-opacity));
+  border: var(--card-border-width) solid rgba(var(--card-border-rgb), var(--card-border-opacity));
   backdrop-filter: blur(22px) saturate(130%);
   -webkit-backdrop-filter: blur(22px) saturate(130%);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07);
@@ -534,8 +538,24 @@ body.no-gate .bg-media .bg-poster {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 52px;
+  gap: 30px;
 }
+
+/* site-wide view count, under the grid */
+.dir-views {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease, transform 0.6s var(--ease), color 0.3s ease;
+}
+.dir-views.in { opacity: 1; transform: none; }
+.dir-views:hover { color: rgba(255, 255, 255, 0.78); }
+.dir-views svg { width: 15px; height: 15px; fill: currentColor; }
 
 .grid {
   display: flex;
@@ -688,7 +708,7 @@ body.leaving .audio-control {
   .tile-name { font-size: 18px; }
   .audio-control { top: 14px; right: 14px; }
   .audio-control .vol-wrap { display: none; }
-  .dir-inner { gap: 36px; }
+  .dir-inner { gap: 22px; }
 }
 
 /* Touch devices: no cursor glow */
@@ -707,7 +727,7 @@ body.leaving .audio-control {
   }
   .world { transform: none !important; opacity: 1 !important; }
   .grain, .cursor-glow, .spark { display: none; }
-  .enter-label, .reveal, .profile-tile, .audio-control, .card-views {
+  .enter-label, .reveal, .profile-tile, .audio-control, .card-views, .dir-views {
     opacity: 1 !important;
     transform: none !important;
   }
