@@ -192,7 +192,7 @@ export function mountBackground({ video: src, poster }) {
    already in flight; play() waits for the gate click (browsers require
    a gesture). start() also mounts the player UI + analyser.
    ============================================================ */
-export function createAudio(src, startVolume = 0.5) {
+export function createAudio(src, startVolume = 0.2) {
   const audio = new Audio();
   audio.loop = true;
   audio.preload = 'auto';
