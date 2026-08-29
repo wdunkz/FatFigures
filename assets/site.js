@@ -18,7 +18,8 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Icons ---------- */
 export const ICONS = {
   website: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm7.9 9h-3.53a15.9 15.9 0 0 0-1.2-5.44A8.03 8.03 0 0 1 19.9 11ZM12 4.06c.98 1.2 1.94 3.2 2.33 4.94H9.67c.39-1.74 1.35-3.74 2.33-4.94ZM4.1 13h3.53c.16 1.9.6 3.75 1.2 5.44A8.03 8.03 0 0 1 4.1 13Zm3.53-2H4.1a8.03 8.03 0 0 1 4.73-5.44A15.9 15.9 0 0 0 7.63 11Zm1.99 2h4.76c-.4 1.9-1.34 3.87-2.38 5.35C10.96 16.87 10.02 14.9 9.62 13Zm5.85 5.44c.6-1.69 1.04-3.54 1.2-5.44h3.53a8.03 8.03 0 0 1-4.73 5.44Z"/></svg>',
-  steam: '<svg viewBox="0 0 24 24"><path d="M12 2C6.95 2 2.8 5.8 2.14 10.68l4.98 2.06a2.6 2.6 0 0 1 1.48-.46l2.2-3.2v-.05a3.53 3.53 0 1 1 3.53 3.53h-.08l-3.15 2.25v.08A2.6 2.6 0 0 1 6 16.31l-3.7-1.53C3.13 18.65 7.16 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2ZM8.1 17.3l-1.14-.47a1.94 1.94 0 0 0 3.6-.15l1.02-.43a2.98 2.98 0 0 1-3.48 1.05Zm7.62-7.72a2.35 2.35 0 1 1-4.7 0 2.35 2.35 0 0 1 4.7 0Z"/></svg>',
+  steam: '<svg viewBox="0 0 24 24"><path d="M11.98 0C5.68 0 .51 4.86.02 11.04l6.43 2.66c.55-.38 1.2-.6 1.91-.6l.19.01 2.86-4.15v-.06a4.53 4.53 0 1 1 4.53 4.53h-.11l-4.07 2.91.01.16a3.4 3.4 0 0 1-6.73.67L.44 15.27A12 12 0 1 0 11.98 0ZM7.54 18.21l-1.47-.61c.26.54.71 1 1.31 1.25a2.55 2.55 0 0 0 3.34-1.37c.26-.63.26-1.32 0-1.95a2.53 2.53 0 0 0-3.26-1.42l1.52.63a1.88 1.88 0 1 1-1.44 3.47Zm11.42-9.3a3.02 3.02 0 1 0-6.03 0 3.02 3.02 0 0 0 6.03 0Zm-5.28 0a2.27 2.27 0 1 1 4.54 0 2.27 2.27 0 0 1-4.54 0Z"/></svg>',
+  snapchat: '<svg viewBox="0 0 24 24"><path d="M12.03 2c2.65.02 4.6 1.9 4.75 4.55.05.85 0 1.7.02 2.55 0 .18.06.25.24.29.35.07.7.06 1.03-.07.55-.22 1.06.02 1.19.55.11.47-.13.85-.66 1.06-.36.14-.73.24-1.09.37-.5.19-.6.44-.38.93.79 1.72 2.05 2.9 3.87 3.5.53.17.65.62.28 1.03-.13.15-.32.26-.51.33-.5.19-1.02.32-1.53.49-.31.1-.44.28-.45.62-.02.6-.29.83-.89.79-.6-.05-1.2-.09-1.79.06-.5.13-.9.42-1.29.74-1.5 1.25-3.42 1.26-4.93.03-.5-.4-1.02-.75-1.68-.83-.47-.06-.94-.02-1.41 0-.5.03-.76-.2-.79-.7-.02-.42-.15-.62-.55-.73-.5-.14-.98-.3-1.46-.48-.62-.24-.77-.75-.31-1.17.35-.32.79-.55 1.15-.87.99-.87 1.7-1.92 2.13-3.17.14-.4.03-.63-.37-.79-.36-.14-.74-.23-1.1-.38-.51-.21-.74-.58-.63-1.05.12-.51.62-.76 1.16-.55.35.14.71.14 1.07.7.2-.4.25-.11.24-.28-.01-.9-.05-1.8.03-2.69.23-2.55 2.17-4.34 4.73-4.36h.23Z"/></svg>',
   youtube: '<svg viewBox="0 0 24 24"><path d="M21.6 7.2s-.2-1.5-.85-2.15c-.8-.85-1.7-.85-2.1-.9C15.9 4 12 4 12 4h-.02s-3.9 0-6.65.15c-.4.05-1.3.05-2.1.9C2.6 5.7 2.4 7.2 2.4 7.2S2.2 9 2.2 10.75v1.5C2.2 14 2.4 15.8 2.4 15.8s.2 1.5.85 2.15c.8.85 1.85.83 2.32.92 1.68.16 7.13.2 7.13.2s3.9 0 6.65-.15c.4-.05 1.3-.05 2.1-.9.65-.65.85-2.15.85-2.15s.2-1.8.2-3.55v-1.5c0-1.75-.2-3.55-.2-3.55ZM9.9 14.6V8.9l5.6 2.86-5.6 2.85Z"/></svg>',
   twitter: '<svg viewBox="0 0 24 24"><path d="M17.5 3h3l-6.6 7.55L21.5 21h-6l-4.7-6.15L4.9 21H1.9l7.05-8.05L1.5 3h6.15l4.25 5.62L17.5 3Zm-1.05 16.2h1.66L7.62 4.7H5.84l10.6 14.5Z"/></svg>',
   bluesky: '<svg viewBox="0 0 24 24"><path d="M12 8.4C10.6 5.7 7.9 3.4 5.4 3c-1.3-.2-1.9.5-1.4 1.9C4.6 6.9 6.3 11 12 14.5c5.7-3.5 7.4-7.6 8-9.6.5-1.4-.1-2.1-1.4-1.9-2.5.4-5.2 2.7-6.6 5.4Zm0 6.6c-1.3 2.4-4 4.4-6.4 4.8-1.4.2-2.1-.5-1.6-2 .5-1.6 1.7-3.5 3.3-4.7 1.7 1 3.2 1.6 4.7 1.9Zm0 0c1.5-.3 3-.9 4.7-1.9 1.6 1.2 2.8 3.1 3.3 4.7.5 1.5-.2 2.2-1.6 2-2.4-.4-5.1-2.4-6.4-4.8Z"/></svg>',
@@ -34,7 +35,6 @@ export const SOUND_ICONS = {
   off: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Zm11.7 3 2.15 2.15 1.06-1.06L16.76 12l2.15-2.15-1.06-1.06L15.7 10.94l-2.15-2.15-1.06 1.06L14.64 12l-2.15 2.15 1.06 1.06L15.7 13.06Z"/></svg>',
 };
 
-const ARROW = '<svg viewBox="0 0 24 24"><path d="M10.8 5.4 4.2 12l6.6 6.6 1.4-1.4-4.2-4.2H20v-2H8l4.2-4.2-1.4-1.4Z"/></svg>';
 const PIN = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>';
 const EYE = '<svg viewBox="0 0 24 24"><path d="M12 5c-5 0-9.27 3.11-11 7 1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7Zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9Zm0-2a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>';
 
@@ -81,6 +81,164 @@ async function readViews(slug) {
   } catch {
     return null; // offline or blocked — the counter just doesn't show
   }
+}
+
+/* ============================================================
+   Discord presence
+
+   Discord has no public API for reading someone's live presence from a
+   static page, so this uses Lanyard (api.lanyard.rest) — the standard
+   way to do it. Two requirements, both easy to trip over:
+
+     1. profiles.json needs "discord": "<numeric user id>". That's the
+        snowflake ID from Discord (Settings > Advanced > Developer Mode,
+        then right-click your avatar > Copy User ID). NOT the @username.
+     2. The account must join discord.gg/lanyard once. Lanyard can only
+        see presence for members of that server; anyone else comes back
+        as "user_not_monitored" and the card is skipped.
+
+   Presence is fetched on entry and refreshed when the tab regains focus,
+   so it stays current without polling a third party in the background.
+   ============================================================ */
+const LANYARD_HOST = 'https://api.lanyard.rest';
+
+const DISCORD_STATUS_LABEL = {
+  online: 'Online',
+  idle: 'Idle',
+  dnd: 'Do Not Disturb',
+  offline: 'Offline',
+};
+
+async function fetchPresence(id) {
+  try {
+    const res = await fetch(`${LANYARD_HOST}/v1/users/${encodeURIComponent(id)}`, { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.success) return { error: json.error?.code || 'unknown' };
+    return { data: json.data };
+  } catch {
+    return { error: 'network' };
+  }
+}
+
+function discordAvatarUrl(user) {
+  if (user.avatar) {
+    const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+    return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=128`;
+  }
+  // default avatar: new usernames shard by id, legacy ones by discriminator
+  const n = user.discriminator && user.discriminator !== '0'
+    ? Number(user.discriminator) % 5
+    : Number((BigInt(user.id) >> 22n) % 6n);
+  return `https://cdn.discordapp.com/embed/avatars/${n}.png`;
+}
+
+/* What to show under the name: custom status first, then whatever they're
+   doing, then just the status word. */
+function presenceLine(data) {
+  const acts = data.activities || [];
+
+  const custom = acts.find(a => a.type === 4);
+  if (custom && (custom.state || custom.emoji)) {
+    const emoji = custom.emoji?.name && !custom.emoji.id ? custom.emoji.name + ' ' : '';
+    return emoji + (custom.state || '');
+  }
+
+  if (data.listening_to_spotify && data.spotify) {
+    return `Listening to ${data.spotify.song}`;
+  }
+
+  const doing = acts.find(a => a.type !== 4);
+  if (doing) {
+    const verb = { 0: 'Playing', 1: 'Streaming', 2: 'Listening to', 3: 'Watching', 5: 'Competing in' };
+    return `${verb[doing.type] || 'Playing'} ${doing.name}`;
+  }
+
+  return DISCORD_STATUS_LABEL[data.discord_status] || '';
+}
+
+/* Builds the card and returns it, or null when there's nothing to show. */
+function buildDiscordCard(data) {
+  const user = data.discord_user;
+  if (!user) return null;
+
+  const wrap = document.createElement('a');
+  wrap.className = 'discord-card';
+  wrap.href = `https://discord.com/users/${user.id}`;
+  wrap.target = '_blank';
+  wrap.rel = 'noopener noreferrer';
+
+  const avaWrap = document.createElement('div');
+  avaWrap.className = 'dc-avatar';
+  const ava = document.createElement('img');
+  ava.src = discordAvatarUrl(user);
+  ava.alt = '';
+  ava.loading = 'lazy';
+  ava.decoding = 'async';
+  const dot = document.createElement('span');
+  dot.className = 'dc-dot';
+  const inner = document.createElement('i');
+  inner.dataset.status = data.discord_status || 'offline';
+  inner.title = DISCORD_STATUS_LABEL[data.discord_status] || '';
+  dot.appendChild(inner);
+  avaWrap.append(ava, dot);
+
+  const info = document.createElement('div');
+  info.className = 'dc-info';
+
+  const name = document.createElement('div');
+  name.className = 'dc-name';
+  name.textContent = user.global_name || user.display_name || user.username;
+
+  const handle = document.createElement('div');
+  handle.className = 'dc-handle';
+  handle.textContent = '@' + user.username;
+
+  const top = document.createElement('div');
+  top.className = 'dc-top';
+  top.append(name, handle);
+
+  const line = presenceLine(data);
+  info.appendChild(top);
+  if (line) {
+    const act = document.createElement('div');
+    act.className = 'dc-activity';
+    act.textContent = line;
+    info.appendChild(act);
+  }
+
+  wrap.append(avaWrap, info);
+  return wrap;
+}
+
+/* Mounts the card into `slot`, then keeps it fresh on tab refocus. */
+async function mountDiscord(slot, id) {
+  const render = (data) => {
+    const card = buildDiscordCard(data);
+    if (!card) return;
+    slot.replaceChildren(card);
+    requestAnimationFrame(() => slot.classList.add('in'));
+  };
+
+  const first = await fetchPresence(id);
+  if (first.error) {
+    // Drop the slot entirely rather than leaving an empty box — it still
+    // carries its own margin, which would show up as dead space in the
+    // card. No broken shell, no fake data, no gap.
+    slot.remove();
+    console.info(`[discord] presence unavailable (${first.error}). ` +
+      'The account must join discord.gg/lanyard for its presence to be readable.');
+    return;
+  }
+  render(first.data);
+
+  let busy = false;
+  document.addEventListener('visibilitychange', async () => {
+    if (document.hidden || busy) return;
+    busy = true;
+    const next = await fetchPresence(id);
+    if (next.data) render(next.data);
+    busy = false;
+  });
 }
 
 /* ---------- Deterministic aura background ---------- */
@@ -428,6 +586,15 @@ function softNavigate(href) {
   setTimeout(() => { location.href = href; }, 320);
 }
 
+/* Going "back" restores the page from the bfcache exactly as it was left —
+   including the .leaving class from softNavigate(), which is opacity:0.
+   Without this the page comes back invisible and looks broken. pageshow
+   fires on both fresh loads and bfcache restores, so clearing it here
+   covers every way back into the page. */
+addEventListener('pageshow', () => {
+  document.body.classList.remove('leaving');
+});
+
 /* ============================================================
    Rendering
    ============================================================ */
@@ -604,6 +771,15 @@ export async function renderProfile(card) {
     add(loc);
   }
 
+  // Discord presence sits between the details and the links, as its own
+  // slot so it can appear late without shifting anything already placed.
+  if (profile.discord) {
+    const slot = document.createElement('div');
+    slot.className = 'discord-slot';
+    add(slot);
+    mountDiscord(slot, profile.discord);
+  }
+
   const links = document.createElement('div');
   links.className = 'links';
   for (const link of profile.links || []) {
@@ -617,18 +793,6 @@ export async function renderProfile(card) {
     links.appendChild(a);
   }
   add(links);
-
-  const back = document.createElement('a');
-  back.className = 'back-link reveal';
-  back.href = '/';
-  back.innerHTML = ARROW + '<span>all profiles</span>';
-  back.style.setProperty('--i', i++);
-  back.addEventListener('click', (e) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-    e.preventDefault();
-    softNavigate('/');
-  });
-  card.appendChild(back);
 
   // View counter, tucked into the corner. Added only if the count
   // actually resolves, so a blocked request leaves no empty chrome.

@@ -14,10 +14,20 @@
     "video": "/assets/videos/dunks.mp4",
     "audio": "/assets/audio/dunks.mp3",
     "links": [
-      { "type": "instagram", "url": "https://www.instagram.com/dunnew_/" },
-      { "type": "steam", "url": "https://steamcommunity.com/id/wdunks" },
-      { "type": "discord", "url": "https://discord.gg/recnet" }
-    ]
+      {
+        "type": "instagram",
+        "url": "https://www.instagram.com/dunnew_/"
+      },
+      {
+        "type": "steam",
+        "url": "https://steamcommunity.com/id/wdunks"
+      },
+      {
+        "type": "discord",
+        "url": "https://discord.gg/recnet"
+      }
+    ],
+    "discord": "677595328115113985"
   },
   {
     "slug": "zai",
@@ -34,9 +44,19 @@
     "video": "/assets/videos/zai.mp4",
     "audio": "/assets/audio/zai.mp3",
     "links": [
-      { "type": "instagram", "url": "https://www.instagram.com/kafaryuu/" },
-      { "type": "discord", "url": "https://discord.gg/recnet" },
-      { "type": "steam", "url": "https://steamcommunity.com/profiles/76561198365920048/" }
-    ]
+      {
+        "type": "instagram",
+        "url": "https://www.instagram.com/kafaryuu/"
+      },
+      {
+        "type": "discord",
+        "url": "https://discord.gg/recnet"
+      },
+      {
+        "type": "steam",
+        "url": "https://steamcommunity.com/profiles/76561198365920048/"
+      }
+    ],
+    "discord": "489994786535768064"
   }
 ]
