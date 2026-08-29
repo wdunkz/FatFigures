@@ -75,20 +75,42 @@ export const SOUND_ICONS = {
   off: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Zm11.7 3 2.15 2.15 1.06-1.06L16.76 12l2.15-2.15-1.06-1.06L15.7 10.94l-2.15-2.15-1.06 1.06L14.64 12l-2.15 2.15 1.06 1.06L15.7 13.06Z"/></svg>',
 };
 
-export function setupAudioControl(src, startVolume = 0.5) {
+export function createEnterGate(onEnter) {
+  const gate = document.createElement('div');
+  gate.className = 'enter-gate';
+
+  const label = document.createElement('div');
+  label.className = 'enter-label';
+  label.textContent = 'click to enter';
+  gate.appendChild(label);
+
+  document.body.appendChild(gate);
+
+  const enter = () => {
+    onEnter();
+    gate.classList.add('hide');
+    setTimeout(() => gate.remove(), 700);
+    gate.removeEventListener('click', enter);
+  };
+  gate.addEventListener('click', enter);
+}
+
+export function setupAudioControl(src, startVolume = 0.5, autoStart = false) {
   const audio = new Audio(src);
   audio.loop = true;
   audio.volume = startVolume;
 
-  // Don't try to autoplay at all — browsers allow it inconsistently
-  // depending on prior visits, which feels random. Instead, always
-  // wait for the visitor's first click, so it behaves the same way
-  // every single time.
-  const startOnInteraction = () => {
+  if (autoStart) {
+    // Called from inside a click handler (the enter gate), so the browser
+    // already trusts this as a real user action — safe to play immediately.
     audio.play().catch(() => {});
-    document.removeEventListener('click', startOnInteraction);
-  };
-  document.addEventListener('click', startOnInteraction);
+  } else {
+    const startOnInteraction = () => {
+      audio.play().catch(() => {});
+      document.removeEventListener('click', startOnInteraction);
+    };
+    document.addEventListener('click', startOnInteraction);
+  }
 
   const bar = document.createElement('div');
   bar.className = 'audio-control';
