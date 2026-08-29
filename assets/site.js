@@ -469,7 +469,7 @@ export function mountBackground({ video: src, poster }) {
    already in flight; play() waits for the gate click (browsers require
    a gesture). start() also mounts the player UI + analyser.
    ============================================================ */
-export function createAudio(src, startVolume = 0.2) {
+export function createAudio(src, startVolume = 0.1) {
   const audio = new Audio();
   audio.loop = true;
   audio.preload = 'auto';
@@ -814,7 +814,7 @@ export async function renderProfile(card) {
     paintAura(profile.slug);
   }
 
-  const audio = profile.audio ? createAudio(profile.audio, 0.5) : null;
+  const audio = profile.audio ? createAudio(profile.audio, 0.2) : null;
 
   /* --- card contents --- */
   card.innerHTML = '';
