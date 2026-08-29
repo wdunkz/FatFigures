@@ -54,6 +54,85 @@ export function paintAura(seed) {
   }
 }
 
+// ---------- Video background ----------
+// Drops a full-bleed, muted, looping video behind everything, with the
+// same dark vignette treatment as the rest of the site. Call this INSTEAD
+// of paintAura() when a profile has a video set.
+export function setupBackgroundVideo(src) {
+  const wrap = document.createElement('div');
+  wrap.className = 'bg-video-wrap';
+
+  const video = document.createElement('video');
+  video.src = src;
+  video.autoplay = true;
+  video.loop = true;
+  video.muted = true;       // required by browsers for autoplay
+  video.playsInline = true;
+  video.preload = 'auto';
+
+  wrap.appendChild(video);
+  document.body.prepend(wrap);
+}
+
+// ---------- Audio control (music player) ----------
+export const SOUND_ICONS = {
+  on: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Zm11.5 3a3.5 3.5 0 0 0-2-3.16v6.32A3.5 3.5 0 0 0 15.5 12Zm2 0a5.5 5.5 0 0 1-3.5 5.14v-2.1A3.48 3.48 0 0 0 16 12a3.48 3.48 0 0 0-2-3.04v-2.1A5.5 5.5 0 0 1 17.5 12Z"/></svg>',
+  off: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Zm11.7 3 2.15 2.15 1.06-1.06L16.76 12l2.15-2.15-1.06-1.06L15.7 10.94l-2.15-2.15-1.06 1.06L14.64 12l-2.15 2.15 1.06 1.06L15.7 13.06Z"/></svg>',
+};
+
+// Adds a small floating player (top-right) with a mute toggle + volume
+// slider, and starts the track playing. Browsers block audio with sound
+// from autoplaying before any user interaction, so if that happens this
+// quietly waits for the first click anywhere on the page and starts then.
+export function setupAudioControl(src, startVolume = 0.5) {
+  const audio = new Audio(src);
+  audio.loop = true;
+  audio.volume = startVolume;
+
+  const attemptPlay = () => audio.play().catch(() => {});
+  attemptPlay();
+
+  const resumeOnInteraction = () => {
+    attemptPlay();
+    document.removeEventListener('click', resumeOnInteraction);
+  };
+  document.addEventListener('click', resumeOnInteraction);
+
+  const bar = document.createElement('div');
+  bar.className = 'audio-control';
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.setAttribute('aria-label', 'Toggle sound');
+  btn.innerHTML = SOUND_ICONS.on;
+
+  const slider = document.createElement('input');
+  slider.type = 'range';
+  slider.min = '0';
+  slider.max = '1';
+  slider.step = '0.01';
+  slider.value = String(startVolume);
+
+  const setIcon = () => {
+    btn.innerHTML = (audio.muted || audio.volume === 0) ? SOUND_ICONS.off : SOUND_ICONS.on;
+  };
+
+  btn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    setIcon();
+  });
+
+  slider.addEventListener('input', () => {
+    audio.volume = parseFloat(slider.value);
+    audio.muted = audio.volume === 0;
+    setIcon();
+  });
+
+  bar.appendChild(btn);
+  bar.appendChild(slider);
+  document.body.appendChild(bar);
+}
+
 // Renders an avatar: uses the image if `avatar` is set, otherwise falls
 // back to a colored initial so a profile looks good with zero assets.
 export function avatarNode(profile, className) {

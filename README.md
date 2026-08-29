@@ -21,6 +21,17 @@ Open **`profiles.json`** and change any field:
 
 - `avatar`: leave `""` to auto-show a colored initial, or set a path like
   `"assets/avatars/mel.png"` (drop the image file into `assets/avatars/`).
+- `video`: leave `""` for the normal generated aura background, or set a
+  path like `"/assets/videos/mel.mp4"` to play a full-screen looping video
+  behind the card instead (drop the `.mp4` into `assets/videos/`). The
+  video is always muted — it's just a visual background.
+- `audio`: leave `""` for no music, or set a path like
+  `"/assets/audio/mel.mp3"` (drop the `.mp3` into `assets/audio/`) to play
+  looping music while that profile page is open. A small mute button +
+  volume slider appears in the top-right automatically. Browsers block
+  audio with sound from autoplaying until the visitor interacts with the
+  page at least once — if that happens, the track just starts on their
+  first click anywhere on the page, which is normal and expected.
 - `links[].type`: one of `website, steam, youtube, twitter, bluesky,
   instagram, twitch, discord, tiktok, github`. Want another platform? Add a
   new SVG to the `ICONS` object at the top of `assets/site.js`, then use that

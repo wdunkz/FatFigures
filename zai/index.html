@@ -18,7 +18,7 @@
   </div>
 
   <script type="module">
-    import { loadProfiles, paintAura, avatarNode, ICONS } from '/assets/site.js';
+    import { loadProfiles, paintAura, avatarNode, ICONS, SOUND_ICONS, setupBackgroundVideo, setupAudioControl } from '/assets/site.js';
 
     // This file is identical in every profile folder — it figures out
     // which profile to show from the URL, e.g. /dunks/ -> slug "dunks".
@@ -35,7 +35,18 @@
         card.innerHTML = `<p class="card-empty">No profile found for <code>/${slug}</code>.<br>Add an entry with that slug to <code>profiles.json</code>.</p>`;
       } else {
         document.title = profile.name;
-        paintAura(profile.slug);
+
+        // Background: a video (if set) replaces the generated aura.
+        if (profile.video) {
+          setupBackgroundVideo(profile.video);
+        } else {
+          paintAura(profile.slug);
+        }
+
+        // Music: only added to the page if this profile has an audio track.
+        if (profile.audio) {
+          setupAudioControl(profile.audio);
+        }
 
         card.innerHTML = '';
         card.appendChild(avatarNode(profile, 'avatar'));
