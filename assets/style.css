@@ -21,6 +21,38 @@ html, body {
   overflow-x: hidden;
 }
 
+/* ---------- Enter gate ---------- */
+.enter-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #05040a;
+  cursor: pointer;
+  transition: opacity 0.6s ease;
+}
+.enter-gate.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+.enter-gate .enter-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  color: #f1e8ff;
+  padding: 16px 44px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  transition: background 0.2s ease;
+}
+.enter-gate:hover .enter-label {
+  background: rgba(255,255,255,0.1);
+}
+
 /* ---------- Image-backed scene (used on the directory page) ---------- */
 .scene {
   position: fixed;
