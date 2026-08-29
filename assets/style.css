@@ -16,6 +16,9 @@
   --card-border-rgb:      255, 255, 255; /* "border"        border colour  */
   --card-border-opacity:  0.12;          /* "borderOpacity" border alpha   */
   --card-border-width:    1px;           /* "borderWidth"   thickness      */
+  --card-glow-rgb:        255, 255, 255; /* "glow"          glow colour    */
+  --card-glow-opacity:    0.18;          /* "glowOpacity"   glow strength  */
+  --card-glow-size:       46px;          /* "glowSize"      glow spread    */
 
   /* Muted tones for the generated aura — a haze, not a colour wheel. */
   --tone-a: #2B303C;
@@ -314,7 +317,10 @@ body.no-gate .bg-media .bg-poster {
   border: var(--card-border-width) solid rgba(var(--card-border-rgb), var(--card-border-opacity));
   backdrop-filter: blur(22px) saturate(130%);
   -webkit-backdrop-filter: blur(22px) saturate(130%);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 0 var(--card-glow-size) rgba(var(--card-glow-rgb), var(--card-glow-opacity)),
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   transition: transform 0.3s var(--ease), box-shadow 0.5s var(--ease);
 }
 /* specular sheen following the pointer (--mx/--my set from JS) */
@@ -414,8 +420,8 @@ body.no-gate .bg-media .bg-poster {
 }
 
 .bio {
-  margin: 12px 0 0;
-  font-size: 16px;
+  margin: 13px 0 0;
+  font-size: 17.5px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.88);
   line-height: 1.5;
@@ -423,8 +429,8 @@ body.no-gate .bg-media .bg-poster {
 .username {
   margin: 8px 0 0;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
   word-break: break-word;
 }
 .location {
@@ -432,11 +438,17 @@ body.no-gate .bg-media .bg-poster {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin: 14px 0 0;
-  font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.55);
+  margin: 15px 0 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.72);
 }
-.location svg { width: 13px; height: 13px; fill: currentColor; flex: none; }
+.location svg {
+  width: 17px;
+  height: 17px;
+  fill: #fff;
+  flex: none;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+}
 
 /* ---- Discord presence card ---- */
 .discord-slot {
@@ -540,20 +552,20 @@ body.no-gate .bg-media .bg-poster {
 .dc-badges { display: inline-flex; align-items: center; gap: 3px; }
 .dc-badges img { width: 15px; height: 15px; display: block; }
 .dc-name {
-  font-size: 15px;
+  font-size: 16.5px;
   font-weight: 700;
   color: #fff;
   line-height: 1.25;
 }
 .dc-handle {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
 }
 .dc-activity {
   margin-top: 2px;
-  font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.62);
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.68);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -573,8 +585,8 @@ body.no-gate .bg-media .bg-poster {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   color: rgba(255, 255, 255, 0.92);
   /* resting glow, so the row reads as lit rather than flat */
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.30));
@@ -589,7 +601,7 @@ body.no-gate .bg-media .bg-poster {
 }
 .links a:active { transform: translateY(-2px) scale(1.04); }
 .links a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 8px; }
-.links svg { width: 27px; height: 27px; fill: currentColor; }
+.links svg { width: 33px; height: 33px; fill: currentColor; }
 /* label pops up on hover */
 .links a::after {
   content: attr(data-label);
@@ -621,9 +633,10 @@ body.no-gate .bg-media .bg-poster {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.6s ease, transform 0.6s var(--ease), color 0.3s ease;
@@ -655,9 +668,10 @@ body.no-gate .bg-media .bg-poster {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.42);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.6s ease, transform 0.6s var(--ease), color 0.3s ease;
@@ -719,6 +733,28 @@ body.no-gate .bg-media .bg-poster {
   pointer-events: none;
 }
 .profile-tile:hover::before { opacity: 1; }
+
+/* White glow that travels around the border, tracking the pointer.
+   The two masks cancel out everywhere except a 1px ring, so the
+   gradient only paints on the border itself rather than the whole tile.
+   --mx/--my come from the same pointermove handler that drives the tilt. */
+.profile-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.18) 40%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.profile-tile:hover::after { opacity: 1; }
 
 .tile-avatar {
   width: 120px;
@@ -807,9 +843,12 @@ body.leaving .audio-control {
   .grain { animation: none; mix-blend-mode: normal; opacity: 0.03; }
 
   .avatar-wrap { width: 96px; height: 96px; }
-  .links { gap: 16px; }
-  .links svg { width: 24px; height: 24px; }
-  .card-views { left: 18px; bottom: 14px; font-size: 12px; }
+  .links { gap: 15px; }
+  .links a { width: 34px; height: 34px; }
+  .links svg { width: 28px; height: 28px; }
+  .location { font-size: 14px; }
+  .location svg { width: 15px; height: 15px; }
+  .card-views { left: 18px; bottom: 14px; font-size: 13px; }
 
   .grid { gap: 20px; }
   .profile-tile { width: calc(50% - 10px); min-width: 150px; padding: 20px 14px 18px; }

@@ -27,7 +27,10 @@
         "url": "https://discord.gg/recnet"
       }
     ],
-    "discord": "677595328115113985"
+    "discord": "677595328115113985",
+    "glow": "#ffffff",
+    "glowOpacity": 0.22,
+    "glowSize": 55
   },
   {
     "slug": "zai",
@@ -57,7 +60,10 @@
         "url": "https://steamcommunity.com/profiles/76561198365920048/"
       }
     ],
-    "discord": "489994786535768064"
+    "discord": "489994786535768064",
+    "glow": "#ffffff",
+    "glowOpacity": 0.16,
+    "glowSize": 55
   },
   {
     "slug": "jdunks",
@@ -83,6 +89,9 @@
         "url": "https://steamcommunity.com/profiles/76561198849372405/"
       }
     ],
-    "discord": "1175813462006444204"
+    "discord": "1175813462006444204",
+    "glow": "#ffffff",
+    "glowOpacity": 0.2,
+    "glowSize": 55
   }
 ]

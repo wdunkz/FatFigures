@@ -50,9 +50,11 @@ for name in "${names[@]}"; do
   # -an: the background is always muted, so the audio track is dead weight.
   # +faststart: moves the moov atom to the front so playback can begin
   # before the whole file has downloaded.
+  # min(HEIGHT,ih) so a source that is already smaller is never upscaled —
+  # upscaling would cost bitrate for no visible gain.
   ffmpeg -y -v error -i "$src" \
     -an \
-    -vf "scale=-2:$HEIGHT:flags=lanczos,fps=$FPS" \
+    -vf "scale=-2:'min($HEIGHT,ih)':flags=lanczos,fps=$FPS" \
     -c:v libx264 -preset slow -crf "$CRF" -profile:v high -level 4.0 \
     -pix_fmt yuv420p -movflags +faststart -g $((FPS * 2)) \
     "$tmp"

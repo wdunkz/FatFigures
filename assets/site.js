@@ -376,6 +376,9 @@ export function paintAura(seed) {
      border        border colour, hex    e.g. "#e6e6e6"
      borderOpacity border alpha, 0-1     e.g. 0.35
      borderWidth   border thickness, px  e.g. 1.5
+     glow          glow colour, hex      e.g. "#ffffff"
+     glowOpacity   glow strength, 0-1    e.g. 0.25  (0 turns it off)
+     glowSize      glow spread, px       e.g. 60
 
    A pale accent needs a much lower opacity than a dark one — a near-white
    tint at 0.5 turns into a washed-out slab over dark video. */
@@ -396,6 +399,7 @@ function applyCardStyle(profile) {
 
   set('--accent-rgb', hexToRgb(profile.accent));
   set('--card-border-rgb', hexToRgb(profile.border));
+  set('--card-glow-rgb', hexToRgb(profile.glow));
 
   if (profile.opacity != null && isFinite(profile.opacity)) {
     set('--card-opacity', clamp01(profile.opacity));
@@ -405,6 +409,12 @@ function applyCardStyle(profile) {
   }
   if (profile.borderWidth != null && isFinite(profile.borderWidth)) {
     set('--card-border-width', Math.max(0, Number(profile.borderWidth)) + 'px');
+  }
+  if (profile.glowOpacity != null && isFinite(profile.glowOpacity)) {
+    set('--card-glow-opacity', clamp01(profile.glowOpacity));
+  }
+  if (profile.glowSize != null && isFinite(profile.glowSize)) {
+    set('--card-glow-size', Math.max(0, Number(profile.glowSize)) + 'px');
   }
 }
 
