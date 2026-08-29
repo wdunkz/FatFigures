@@ -814,7 +814,7 @@ export async function renderProfile(card) {
     paintAura(profile.slug);
   }
 
-  const audio = profile.audio ? createAudio(profile.audio, 0.2) : null;
+  const audio = profile.audio ? createAudio(profile.audio, 0.15) : null;
 
   /* --- card contents --- */
   card.innerHTML = '';

@@ -49,7 +49,7 @@
     const bg = MAIN_BG_VIDEO
       ? mountBackground({ video: MAIN_BG_VIDEO, poster: MAIN_BG_POSTER })
       : null;
-    const audio = MAIN_BG_AUDIO ? createAudio(MAIN_BG_AUDIO, 0.5) : null;
+    const audio = MAIN_BG_AUDIO ? createAudio(MAIN_BG_AUDIO, 0.15) : null;
 
     // Build the grid while the visitor is still on the gate.
     await renderDirectory(document.getElementById('grid'));
