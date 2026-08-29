@@ -113,6 +113,25 @@ const DISCORD_STATUS_LABEL = {
   offline: 'Offline',
 };
 
+/* Discord serves badge art from fixed, long-stable hashes — they aren't
+   returned by any API, so they're pinned here. A retired one just 404s
+   and that image drops itself. */
+const DISCORD_BADGE_ICONS = {
+  STAFF:               '5e74e9b61934fc1f67c65515d1f7e60d',
+  PARTNER:             '3f9748e53446a137a052f3454e2de41e',
+  HYPESQUAD:           'bf01d1073931f921909045f3a39fd264',
+  BUG_HUNTER_LEVEL_1:  '2717692c7dca7289b35297368a940dd0',
+  BUG_HUNTER_LEVEL_2:  '848f79194d4be5ff5f81505cbd0ce1e6',
+  HOUSE_BRAVERY:       '8a88d63823d8a71cd5e390baa45efa02',
+  HOUSE_BRILLIANCE:    '011940fd013da3f7fb926e4a1cd2e618',
+  HOUSE_BALANCE:       '3aa41de486fa12454c3761e8e223442e',
+  EARLY_SUPPORTER:     '7060786766c9c840eb3019e725d2b358',
+  VERIFIED_DEVELOPER:  '6df5892e0f35b051f8b61eace34f4967',
+  CERTIFIED_MODERATOR: 'fee1624003e2fee35cb398e125dc479b',
+  ACTIVE_DEVELOPER:    '6bdc42827a831498b592f5f9e5e0e5f4',
+  NITRO:               '2ba85e8026a8614b640c2837bcdfe21b',
+};
+
 /* Identity — works for any account, no server membership needed. */
 async function fetchDiscordUser(id) {
   try {
@@ -208,27 +227,64 @@ function buildDiscordCard(user, presence) {
   name.className = 'dc-name';
   name.textContent = user.global_name || user.display_name || user.username;
 
-  const handle = document.createElement('div');
-  handle.className = 'dc-handle';
-  handle.textContent = '@' + user.username;
-
   const top = document.createElement('div');
   top.className = 'dc-top';
-  top.append(name, handle);
+  top.appendChild(name);
+
+  // Guild tag ("640", "kiji") — this is the little pill next to the name.
+  // It rides on the profile lookup, so it needs no Lanyard.
+  const clan = user.primary_guild || user.clan;
+  if (clan && clan.identity_enabled && clan.tag) {
+    const pill = document.createElement('span');
+    pill.className = 'dc-tag';
+    if (clan.badge && clan.identity_guild_id) {
+      const badge = document.createElement('img');
+      badge.src = `https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=32`;
+      badge.alt = '';
+      badge.loading = 'lazy';
+      badge.addEventListener('error', () => badge.remove());
+      pill.appendChild(badge);
+    }
+    pill.appendChild(document.createTextNode(clan.tag));
+    top.appendChild(pill);
+  }
+
+  // Profile badges (Nitro, HypeSquad house, ...). Any hash Discord has
+  // retired just 404s, and the image removes itself rather than leaving a
+  // broken icon behind.
+  const flags = user.public_flags_array || [];
+  const badges = flags.filter(f => DISCORD_BADGE_ICONS[f]);
+  if (badges.length) {
+    const row = document.createElement('span');
+    row.className = 'dc-badges';
+    for (const flag of badges) {
+      const img = document.createElement('img');
+      img.src = `https://cdn.discordapp.com/badge-icons/${DISCORD_BADGE_ICONS[flag]}.png`;
+      img.alt = flag.replace(/_/g, ' ').toLowerCase();
+      img.title = img.alt;
+      img.loading = 'lazy';
+      img.addEventListener('error', () => img.remove());
+      row.appendChild(img);
+    }
+    top.appendChild(row);
+  }
 
   const info = document.createElement('div');
   info.className = 'dc-info';
   info.appendChild(top);
 
-  if (presence) {
-    const line = presenceLine(presence);
-    if (line) {
-      const act = document.createElement('div');
-      act.className = 'dc-activity';
-      act.textContent = line;
-      info.appendChild(act);
-    }
+  // Second line: the live status when we have it, otherwise the handle,
+  // so the card is never a lone name on its own.
+  const line = presence ? presenceLine(presence) : '';
+  const sub = document.createElement('div');
+  if (line) {
+    sub.className = 'dc-activity';
+    sub.textContent = line;
+  } else {
+    sub.className = 'dc-handle';
+    sub.textContent = '@' + user.username;
   }
+  info.appendChild(sub);
 
   wrap.append(avaWrap, info);
   return wrap;

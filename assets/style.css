@@ -520,7 +520,25 @@ body.no-gate .bg-media .bg-poster {
 }
 
 .dc-info { min-width: 0; }
-.dc-top { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
+.dc-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+/* guild tag pill — server badge + short tag, e.g. [icon] 640 */
+.dc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px 2px 5px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.11);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.92);
+}
+.dc-tag img { width: 14px; height: 14px; display: block; }
+
+.dc-badges { display: inline-flex; align-items: center; gap: 3px; }
+.dc-badges img { width: 15px; height: 15px; display: block; }
 .dc-name {
   font-size: 15px;
   font-weight: 700;
