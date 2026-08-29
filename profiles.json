@@ -7,9 +7,9 @@
     "video": "",
     "audio": "",
     "links": [
-      { "type": "bluesky", "url": "https://bsky.app/profile/example" },
-      { "type": "steam", "url": "https://steamcommunity.com/id/example" },
-      { "type": "youtube", "url": "https://youtube.com/@example" }
+      { "type": "discord", "url": "https://discordapp.com/users/677595328115113985" },
+      { "type": "steam", "url": "https://steamcommunity.com/id/wdunks" },
+      { "type": "discord", "url": "https://discord.gg/recnet" }
     ]
   },
   {
@@ -21,7 +21,7 @@
     "audio": "",
     "links": [
       { "type": "twitter", "url": "https://twitter.com/example" },
-      { "type": "discord", "url": "https://discord.gg/example" }
+      { "type": "discord", "url": "https://discord.gg/recnet" }
     ]
   }
 ]
