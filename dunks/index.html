@@ -4,82 +4,41 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>dunks</title>
+<meta name="theme-color" content="#07070B" />
 <link rel="icon" type="image/png" href="/assets/dunks.png" />
+
+<!-- Start the data + poster fetches before anything else parses. -->
+<script>window.__profilesReq = fetch('/profiles.json').then(function (r) {
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+});</script>
+<link rel="preload" as="image" href="/assets/posters/dunks.jpg" />
+<link rel="preload" as="image" href="/assets/avatars/dunks.png" />
+<link rel="modulepreload" href="/assets/site.js" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
-  <div id="aura"></div>
-
-  <div class="stage">
-    <div id="card" class="card">
-      <p class="card-empty">loading…</p>
+  <div class="world">
+    <div class="stage">
+      <div id="card" class="card"><p class="card-empty">loading&hellip;</p></div>
     </div>
   </div>
 
+  <noscript>
+    <p class="empty-state" style="text-align:center">This page needs JavaScript.</p>
+  </noscript>
+
   <script type="module">
-    import { loadProfiles, paintAura, avatarNode, ICONS, SOUND_ICONS, setupBackgroundVideo, setupAudioControl } from '/assets/site.js';
+    // Identical in every profile folder: renderProfile() reads the slug
+    // from the URL and pulls everything else from profiles.json.
+    import { renderProfile, mountAmbience } from '/assets/site.js';
 
-    // This file is identical in every profile folder — it figures out
-    // which profile to show from the URL, e.g. /dunks/ -> slug "dunks".
-    const slug = location.pathname.split('/').filter(Boolean).pop();
-    const card = document.getElementById('card');
-
-    try {
-      const profiles = await loadProfiles();
-      const profile = profiles.find(p => p.slug === slug);
-
-      if (!profile) {
-        document.title = 'not found';
-        paintAura(slug);
-        card.innerHTML = `<p class="card-empty">No profile found for <code>/${slug}</code>.<br>Add an entry with that slug to <code>profiles.json</code>.</p>`;
-      } else {
-        document.title = profile.name;
-
-        // Background: a video (if set) replaces the generated aura.
-        if (profile.video) {
-          setupBackgroundVideo(profile.video);
-        } else {
-          paintAura(profile.slug);
-        }
-
-        // Music: only added to the page if this profile has an audio track.
-        if (profile.audio) {
-          setupAudioControl(profile.audio);
-        }
-
-        card.innerHTML = '';
-        card.appendChild(avatarNode(profile, 'avatar'));
-
-        const name = document.createElement('h1');
-        name.className = 'name';
-        name.textContent = profile.name;
-        card.appendChild(name);
-
-        if (profile.username) {
-          const uname = document.createElement('p');
-          uname.className = 'username';
-          uname.textContent = profile.username;
-          card.appendChild(uname);
-        }
-
-        const links = document.createElement('div');
-        links.className = 'links';
-        for (const link of profile.links || []) {
-          const a = document.createElement('a');
-          a.href = link.url;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          a.title = link.type;
-          a.innerHTML = ICONS[link.type] || ICONS.website;
-          links.appendChild(a);
-        }
-        card.appendChild(links);
-      }
-    } catch (err) {
-      card.innerHTML = `<p class="card-empty">Couldn't load profiles.json — ${err.message}</p>`;
-    }
+    mountAmbience();
+    renderProfile(document.getElementById('card'));
   </script>
 </body>
 </html>

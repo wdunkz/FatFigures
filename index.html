@@ -4,67 +4,60 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sexy Blacks</title>
+<meta name="theme-color" content="#07070B" />
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+<!-- Start the data + poster fetches before anything else parses. -->
+<script>window.__profilesReq = fetch('/profiles.json').then(function (r) {
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+});</script>
+<link rel="preload" as="image" href="/assets/posters/main-bg.jpg" />
+<link rel="modulepreload" href="/assets/site.js" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
-  <div class="scene"></div>
+  <div class="world">
+    <main class="directory">
+      <div class="dir-inner">
+        <div id="grid" class="grid"></div>
+      </div>
+    </main>
+  </div>
 
-  <main class="directory">
-    <div id="grid" class="grid"></div>
-  </main>
+  <noscript>
+    <p class="empty-state" style="text-align:center">This page needs JavaScript.</p>
+  </noscript>
 
   <script type="module">
+    import {
+      renderDirectory, mountBackground, createAudio, createEnterGate, mountAmbience,
+    } from '/assets/site.js';
 
-import { loadProfiles, avatarNode, setupBackgroundVideo, setupAudioControl, createEnterGate } from '/assets/site.js';
+    const MAIN_BG_VIDEO  = '/assets/videos/main-bg.mp4';
+    const MAIN_BG_POSTER = '/assets/posters/main-bg.jpg';
+    const MAIN_BG_AUDIO  = '/assets/audio/main-theme.mp3';
 
-const MAIN_BG_VIDEO = '/assets/videos/main-bg.mp4';
-const MAIN_BG_AUDIO = '/assets/audio/main-theme.mp3';
+    mountAmbience();
 
-createEnterGate(() => {
-  if (MAIN_BG_VIDEO) {
-    document.querySelector('.scene')?.remove();
-    setupBackgroundVideo(MAIN_BG_VIDEO);
-  }
+    // Media starts buffering immediately, behind the gate — the gate
+    // shows the blurred poster meanwhile, so entering is instant.
+    const bg = MAIN_BG_VIDEO
+      ? mountBackground({ video: MAIN_BG_VIDEO, poster: MAIN_BG_POSTER })
+      : null;
+    const audio = MAIN_BG_AUDIO ? createAudio(MAIN_BG_AUDIO, 0.5) : null;
 
-  if (MAIN_BG_AUDIO) {
-    setupAudioControl(MAIN_BG_AUDIO, 0.5, true);
-  }
-});
+    // Build the grid while the visitor is still on the gate.
+    await renderDirectory(document.getElementById('grid'));
 
-    const grid = document.getElementById('grid');
+    await createEnterGate();
 
-    try {
-      const profiles = await loadProfiles();
-
-      if (!profiles.length) {
-        grid.outerHTML = '<p class="empty-state">No profiles yet — add one to profiles.json.</p>';
-      } else {
-        for (const p of profiles) {
-          const a = document.createElement('a');
-          a.className = 'profile-tile';
-          a.href = `/${p.slug}/`;
-
-          a.appendChild(avatarNode(p, 'tile-avatar'));
-
-          const name = document.createElement('div');
-          name.className = 'tile-name';
-          name.textContent = p.name;
-          a.appendChild(name);
-
-          const slug = document.createElement('div');
-          slug.className = 'tile-slug';
-          slug.textContent = '/' + p.slug;
-          a.appendChild(slug);
-
-          grid.appendChild(a);
-        }
-      }
-    } catch (err) {
-      grid.outerHTML = `<p class="empty-state">Couldn't load profiles.json — ${err.message}</p>`;
-    }
+    bg?.reveal();
+    audio?.start();
   </script>
 </body>
 </html>
