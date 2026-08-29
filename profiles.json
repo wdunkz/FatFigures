@@ -22,7 +22,7 @@
     "links": [
       { "type": "instagram", "url": "https://www.instagram.com/kafaryuu/" },
       { "type": "discord", "url": "https://discord.gg/recnet" },
-      { "type": "discord", "url": "https://steamcommunity.com/profiles/76561198365920048/" }
+      { "type": "steam", "url": "https://steamcommunity.com/profiles/76561198365920048/" }
     ]
   }
 ]
