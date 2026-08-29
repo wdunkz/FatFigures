@@ -84,23 +84,27 @@ async function readViews(slug) {
 }
 
 /* ============================================================
-   Discord presence
+   Discord
 
-   Discord has no public API for reading someone's live presence from a
-   static page, so this uses Lanyard (api.lanyard.rest) — the standard
-   way to do it. Two requirements, both easy to trip over:
+   Two different problems with two different answers:
 
-     1. profiles.json needs "discord": "<numeric user id>". That's the
-        snowflake ID from Discord (Settings > Advanced > Developer Mode,
-        then right-click your avatar > Copy User ID). NOT the @username.
-     2. The account must join discord.gg/lanyard once. Lanyard can only
-        see presence for members of that server; anyone else comes back
-        as "user_not_monitored" and the card is skipped.
+   IDENTITY (tag, display name, avatar) comes from japi.rest, which
+   resolves any user ID with no setup at all. This is what makes the card
+   appear for everyone.
 
-   Presence is fetched on entry and refreshed when the tab regains focus,
-   so it stays current without polling a third party in the background.
+   PRESENCE (online/idle/dnd + custom status) is a hard Discord platform
+   limit: the gateway only sends a user's presence to bots that share a
+   server with them. No service can read it otherwise, which is why
+   Lanyard asks people to join discord.gg/lanyard. So presence is treated
+   as a bonus — if Lanyard can see the account the card gains a live
+   status pip and status line, and if it can't, the card still shows
+   identity rather than disappearing.
+
+   profiles.json takes "discord": "<numeric user id>" (Discord Settings >
+   Advanced > Developer Mode, then right-click avatar > Copy User ID).
    ============================================================ */
 const LANYARD_HOST = 'https://api.lanyard.rest';
+const JAPI_HOST = 'https://japi.rest';
 
 const DISCORD_STATUS_LABEL = {
   online: 'Online',
@@ -109,23 +113,37 @@ const DISCORD_STATUS_LABEL = {
   offline: 'Offline',
 };
 
+/* Identity — works for any account, no server membership needed. */
+async function fetchDiscordUser(id) {
+  try {
+    const res = await fetch(`${JAPI_HOST}/discord/v1/user/${encodeURIComponent(id)}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data || null;
+  } catch {
+    return null;
+  }
+}
+
+/* Presence — only resolves for accounts Lanyard can see. */
 async function fetchPresence(id) {
   try {
     const res = await fetch(`${LANYARD_HOST}/v1/users/${encodeURIComponent(id)}`, { cache: 'no-store' });
     const json = await res.json();
-    if (!json.success) return { error: json.error?.code || 'unknown' };
-    return { data: json.data };
+    return json.success ? json.data : null;
   } catch {
-    return { error: 'network' };
+    return null;
   }
 }
 
 function discordAvatarUrl(user) {
+  if (user.avatarURL) return user.avatarURL;
   if (user.avatar) {
     const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
     return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=128`;
   }
-  // default avatar: new usernames shard by id, legacy ones by discriminator
+  if (user.defaultAvatarURL) return user.defaultAvatarURL;
+  // new usernames shard by id, legacy ones by discriminator
   const n = user.discriminator && user.discriminator !== '0'
     ? Number(user.discriminator) % 5
     : Number((BigInt(user.id) >> 22n) % 6n);
@@ -133,7 +151,7 @@ function discordAvatarUrl(user) {
 }
 
 /* What to show under the name: custom status first, then whatever they're
-   doing, then just the status word. */
+   doing, then just the status word. Only ever called with live presence. */
 function presenceLine(data) {
   const acts = data.activities || [];
 
@@ -156,9 +174,9 @@ function presenceLine(data) {
   return DISCORD_STATUS_LABEL[data.discord_status] || '';
 }
 
-/* Builds the card and returns it, or null when there's nothing to show. */
-function buildDiscordCard(data) {
-  const user = data.discord_user;
+/* `presence` is optional — without it the card drops the status pip and
+   status line and shows identity alone. */
+function buildDiscordCard(user, presence) {
   if (!user) return null;
 
   const wrap = document.createElement('a');
@@ -174,16 +192,17 @@ function buildDiscordCard(data) {
   ava.alt = '';
   ava.loading = 'lazy';
   ava.decoding = 'async';
-  const dot = document.createElement('span');
-  dot.className = 'dc-dot';
-  const inner = document.createElement('i');
-  inner.dataset.status = data.discord_status || 'offline';
-  inner.title = DISCORD_STATUS_LABEL[data.discord_status] || '';
-  dot.appendChild(inner);
-  avaWrap.append(ava, dot);
+  avaWrap.appendChild(ava);
 
-  const info = document.createElement('div');
-  info.className = 'dc-info';
+  if (presence) {
+    const dot = document.createElement('span');
+    dot.className = 'dc-dot';
+    const inner = document.createElement('i');
+    inner.dataset.status = presence.discord_status || 'offline';
+    inner.title = DISCORD_STATUS_LABEL[presence.discord_status] || '';
+    dot.appendChild(inner);
+    avaWrap.appendChild(dot);
+  }
 
   const name = document.createElement('div');
   name.className = 'dc-name';
@@ -197,46 +216,62 @@ function buildDiscordCard(data) {
   top.className = 'dc-top';
   top.append(name, handle);
 
-  const line = presenceLine(data);
+  const info = document.createElement('div');
+  info.className = 'dc-info';
   info.appendChild(top);
-  if (line) {
-    const act = document.createElement('div');
-    act.className = 'dc-activity';
-    act.textContent = line;
-    info.appendChild(act);
+
+  if (presence) {
+    const line = presenceLine(presence);
+    if (line) {
+      const act = document.createElement('div');
+      act.className = 'dc-activity';
+      act.textContent = line;
+      info.appendChild(act);
+    }
   }
 
   wrap.append(avaWrap, info);
   return wrap;
 }
 
-/* Mounts the card into `slot`, then keeps it fresh on tab refocus. */
+/* Mounts the card, then refreshes presence when the tab regains focus. */
 async function mountDiscord(slot, id) {
-  const render = (data) => {
-    const card = buildDiscordCard(data);
-    if (!card) return;
+  const render = (user, presence) => {
+    const card = buildDiscordCard(user, presence);
+    if (!card) return false;
     slot.replaceChildren(card);
     requestAnimationFrame(() => slot.classList.add('in'));
+    return true;
   };
 
-  const first = await fetchPresence(id);
-  if (first.error) {
-    // Drop the slot entirely rather than leaving an empty box — it still
-    // carries its own margin, which would show up as dead space in the
-    // card. No broken shell, no fake data, no gap.
+  // Identity and presence are independent; ask for both at once and use
+  // whatever comes back.
+  const [identity, presence] = await Promise.all([fetchDiscordUser(id), fetchPresence(id)]);
+  const user = presence?.discord_user || identity;
+
+  if (!user) {
+    // Both lookups failed — drop the slot rather than leave an empty box,
+    // which would still contribute its own margin as dead space.
     slot.remove();
-    console.info(`[discord] presence unavailable (${first.error}). ` +
-      'The account must join discord.gg/lanyard for its presence to be readable.');
+    console.info(`[discord] could not resolve user ${id}.`);
     return;
   }
-  render(first.data);
+
+  render(user, presence);
+
+  if (!presence) {
+    console.info(`[discord] showing ${user.username} without live presence. ` +
+      'Discord only exposes presence to bots sharing a server with the user, ' +
+      'so joining discord.gg/lanyard is what would light up the status pip.');
+    return; // nothing live to refresh
+  }
 
   let busy = false;
   document.addEventListener('visibilitychange', async () => {
     if (document.hidden || busy) return;
     busy = true;
     const next = await fetchPresence(id);
-    if (next.data) render(next.data);
+    if (next) render(next.discord_user || user, next);
     busy = false;
   });
 }
