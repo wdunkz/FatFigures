@@ -22,8 +22,6 @@ export async function loadProfiles() {
 }
 
 // ---------- Deterministic aura background ----------
-// Same seed (slug) always produces the same colored-blur arrangement,
-// so every profile gets its own consistent visual signature for free.
 function hashStr(str) {
   let h = 5381;
   for (let i = 0; i < str.length; i++) h = (h * 33) ^ str.charCodeAt(i);
@@ -55,9 +53,6 @@ export function paintAura(seed) {
 }
 
 // ---------- Video background ----------
-// Drops a full-bleed, muted, looping video behind everything, with the
-// same dark vignette treatment as the rest of the site. Call this INSTEAD
-// of paintAura() when a profile has a video set.
 export function setupBackgroundVideo(src) {
   const wrap = document.createElement('div');
   wrap.className = 'bg-video-wrap';
@@ -66,7 +61,7 @@ export function setupBackgroundVideo(src) {
   video.src = src;
   video.autoplay = true;
   video.loop = true;
-  video.muted = true;       // required by browsers for autoplay
+  video.muted = true;
   video.playsInline = true;
   video.preload = 'auto';
 
@@ -80,10 +75,6 @@ export const SOUND_ICONS = {
   off: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Zm11.7 3 2.15 2.15 1.06-1.06L16.76 12l2.15-2.15-1.06-1.06L15.7 10.94l-2.15-2.15-1.06 1.06L14.64 12l-2.15 2.15 1.06 1.06L15.7 13.06Z"/></svg>',
 };
 
-// Adds a small floating player (top-right) with a mute toggle + volume
-// slider, and starts the track playing. Browsers block audio with sound
-// from autoplaying before any user interaction, so if that happens this
-// quietly waits for the first click anywhere on the page and starts then.
 export function setupAudioControl(src, startVolume = 0.5) {
   const audio = new Audio(src);
   audio.loop = true;

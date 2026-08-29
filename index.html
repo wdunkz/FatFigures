@@ -12,14 +12,24 @@
   <div class="scene"></div>
 
   <main class="directory">
-    <p class="eyebrow">profile directory</p>
-    <h1>everyone here</h1>
-    <p class="sub">Every card below is its own page. Click one to open it.</p>
     <div id="grid" class="grid"></div>
   </main>
 
   <script type="module">
-    import { loadProfiles, avatarNode } from '/assets/site.js';
+
+import { loadProfiles, avatarNode, setupBackgroundVideo, setupAudioControl } from '/assets/site.js';
+
+const MAIN_BG_VIDEO = '/assets/videos/main-bg.mp4';
+const MAIN_BG_AUDIO = '/assets/audio/main-theme.mp3';
+
+if (MAIN_BG_VIDEO) {
+  document.querySelector('.scene')?.remove();
+  setupBackgroundVideo(MAIN_BG_VIDEO);
+}
+
+if (MAIN_BG_AUDIO) {
+  setupAudioControl(MAIN_BG_AUDIO);
+}
 
     const grid = document.getElementById('grid');
 
