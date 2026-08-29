@@ -80,14 +80,15 @@ export function setupAudioControl(src, startVolume = 0.5) {
   audio.loop = true;
   audio.volume = startVolume;
 
-  const attemptPlay = () => audio.play().catch(() => {});
-  attemptPlay();
-
-  const resumeOnInteraction = () => {
-    attemptPlay();
-    document.removeEventListener('click', resumeOnInteraction);
+  // Don't try to autoplay at all — browsers allow it inconsistently
+  // depending on prior visits, which feels random. Instead, always
+  // wait for the visitor's first click, so it behaves the same way
+  // every single time.
+  const startOnInteraction = () => {
+    audio.play().catch(() => {});
+    document.removeEventListener('click', startOnInteraction);
   };
-  document.addEventListener('click', resumeOnInteraction);
+  document.addEventListener('click', startOnInteraction);
 
   const bar = document.createElement('div');
   bar.className = 'audio-control';
