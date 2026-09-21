@@ -93,5 +93,34 @@
     "glow": "#ffffff",
     "glowOpacity": 0.2,
     "glowSize": 55
+  },
+  {
+    "slug": "Lenny",
+    "name": "Lenny",
+    "username": "",
+    "bio": "",
+    "location": "Florida",
+    "accent": "#e6e6e6",
+    "opacity": 0.15,
+    "border": "#ffffff",
+    "borderOpacity": 0.3,
+    "borderWidth": 1,
+    "avatar": "/assets/avatars/Lenny.png",
+    "video": "/assets/videos/jdunks.mp4",
+    "audio": "/assets/audio/jdunks.mp3",
+    "links": [
+      {
+        "type": "discord",
+        "url": "https://discord.gg/recnet"
+      },
+      {
+        "type": "steam",
+        "url": "https://steamcommunity.com/profiles/76561198849372405/"
+      }
+    ],
+    "discord": "575057504304627712",
+    "glow": "#ffffff",
+    "glowOpacity": 0.2,
+    "glowSize": 55
   }
 ]
