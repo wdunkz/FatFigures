@@ -15,14 +15,6 @@
     "audio": "/assets/audio/dunks.mp3",
     "links": [
       {
-        "type": "instagram",
-        "url": "https://www.instagram.com/dunnew_/"
-      },
-      {
-        "type": "steam",
-        "url": "https://steamcommunity.com/id/wdunks"
-      },
-      {
         "type": "discord",
         "url": "https://discord.gg/recnet"
       }
@@ -95,7 +87,7 @@
     "glowSize": 55
   },
   {
-    "slug": "Lenny",
+    "slug": "lenny",
     "name": "Lenny",
     "username": "",
     "bio": "",
